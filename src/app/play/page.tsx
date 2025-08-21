@@ -1976,6 +1976,8 @@ function PlayPageClient() {
           </div>
         </div>
 
+        <div>{videoUrl}</div>
+
         {/* 详情展示 */}
         <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
           {/* 文字区 */}
