@@ -1621,10 +1621,32 @@ function PlayPageClient() {
       artPlayerRef.current.on('video:ended', () => {
         const d = detailRef.current;
         const idx = currentEpisodeIndexRef.current;
+        const player = artPlayerRef.current;
+
         if (d && d.episodes && idx < d.episodes.length - 1) {
-          setTimeout(() => {
-            setCurrentEpisodeIndex(idx + 1);
-          }, 1000);
+          // 获取视频总时长（秒）
+          const videoDuration = player.duration;
+          // 只有当视频时长大于30秒时才进行判断
+          if (videoDuration > 30) {
+            // 获取当前播放时间
+            const currentTime = player.currentTime;
+            // 计算已播放的百分比
+            const playedPercentage = (currentTime / videoDuration) * 100;
+
+            // 只有当观看了超过90%的内容才认为是正常结束
+            if (playedPercentage >= 90) {
+              setTimeout(() => {
+                setCurrentEpisodeIndex(idx + 1);
+              }, 1000);
+            }
+          } else {
+            // 对于很短的视频（≤30秒），直接播放下一个
+            /*
+            setTimeout(() => {
+              setCurrentEpisodeIndex(idx + 1);
+            }, 1000);
+            */
+          }
         }
       });
 
